@@ -1,0 +1,9 @@
+//------------------------------------------------
+// pMux config block
+
+ProcessConfig = pMux
+{
+   AppTick   = 4
+   CommsTick = 4
+}
+
