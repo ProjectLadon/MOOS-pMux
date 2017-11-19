@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.2.4.1.2
+links: []
+normative: true
+ref: ''
+reviewed: e09e3d065d21f672be35148b8be250b3
+text: |
+  If the value of this key is ```variable```, the module **shall** treat this as a variable value controlled by a named MOOS community variable.

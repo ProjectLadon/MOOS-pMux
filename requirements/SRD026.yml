@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.2.6.1
+links: []
+normative: true
+ref: ''
+reviewed: c052061cbe0898eab3dfcc1e4bb7f2e9
+text: |
+  Each Switch object **must** have a ```var``` key which is a string. The module **shall** subscribe to this variable.

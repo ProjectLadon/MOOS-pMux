@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.2.6.5
+links: []
+normative: true
+ref: ''
+reviewed: 8b7a73c8dcead1359892a83ce2de75f2
+text: |
+  If the ```threshold``` key is otherwise present, the module **shall** log an error and exit.

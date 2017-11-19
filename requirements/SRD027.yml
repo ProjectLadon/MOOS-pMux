@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.2.6.2
+links: []
+normative: true
+ref: ''
+reviewed: 445a5d61a572e71f7f31d49ecb9b6028
+text: |
+  Each Switch object **may** have a ```type``` key which is a string. This value **must** be either ```BINARY``` or ```DOUBLE```. If it is missing, the value **shall** default to ```BINARY```.

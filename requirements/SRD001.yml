@@ -1,0 +1,11 @@
+active: true
+derived: false
+level: 1.0
+links: []
+normative: false
+ref: ''
+reviewed: 0dfee01dd1f9d41032c306700e461fab
+text: |
+  MOOS Multiplexer Module
+
+  This module provides a multi-channel multiplexer block for MOOS.

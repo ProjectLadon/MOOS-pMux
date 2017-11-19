@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.2.4.1.0
+links: []
+normative: true
+ref: ''
+reviewed: d69c517593dfc46e9e8e3c2ba1f871b1
+text: |
+  Each False object **may** have a ```function``` key. If it is missing, its value **shall** default to ```variable```.

@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 2.2.4
+links: []
+normative: true
+ref: ''
+reviewed: 26e446756c4de02525e75bf651611714
+text: |
+  If the Switch input is a DOUBLE and its value is less than the specified ```threshold```, then this module **shall** publish the value of the False input to the Output variable.

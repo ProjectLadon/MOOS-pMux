@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.2.3.1.0
+links: []
+normative: true
+ref: ''
+reviewed: 1433ffbda528a71e21571769213835a1
+text: |
+  Each True object **may** have a ```function``` key. If it is missing, its value **shall** default to ```variable```.

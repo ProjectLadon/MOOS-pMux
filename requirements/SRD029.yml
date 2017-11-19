@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.2.6.4
+links: []
+normative: true
+ref: ''
+reviewed: 7b71d27f18dc5d5526aa1e0192ed587c
+text: |
+  If the ```type``` key is equal to ```DOUBLE```, then the ```block``` entry **may** have a ```threshold``` key. If it is not present, its value **shall** default to 0.

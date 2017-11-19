@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.2.5
+links: []
+normative: true
+ref: ''
+reviewed: 87a056ac08d1764f298df281587405aa
+text: |
+  Each ```block``` entry **must** have an ```Output``` key which is a string. This module **shall** publish the output of this block to the variable named by this key.

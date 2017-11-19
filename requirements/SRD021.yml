@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.2.4.2.0
+links: []
+normative: true
+ref: ''
+reviewed: 62c9f8256de68ade66a2b92e7920fdd8
+text: |
+  Each False object **must** have a ```var``` key.

@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.2.1
+links: []
+normative: true
+ref: ''
+reviewed: dac47efc0bd151f4fa0ab96c761b4a5f
+text: |
+  The configuration file **must** have one or more ```block``` entries. Each ```block``` entry **must** be a JSON object conforming to schema/block_schema.json. If any entries do not conform, this module **shall** log an error and exit.

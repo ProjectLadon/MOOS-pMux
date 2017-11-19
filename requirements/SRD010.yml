@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.2.3.0
+links: []
+normative: true
+ref: ''
+reviewed: 0de49da63850a9d1bf8e46bf1cde646a
+text: |
+  Each ```block``` entry **must** have a ```True``` key which is a JSON object.

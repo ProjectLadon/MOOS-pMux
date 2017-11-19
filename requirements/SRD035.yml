@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 2.2.2
+links: []
+normative: true
+ref: ''
+reviewed: 437f55eba599ceaa4a7a6a5cc4764e9f
+text: |
+  If the Switch input is a BINARY and it is ```false```, then this module **shall** publish the value of the False input to the Output variable.

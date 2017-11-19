@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 2.2.0
+links: []
+normative: true
+ref: ''
+reviewed: a6cd9516a1481ed7951fdab2478d35dd
+text: |
+  The following operations **shall** be performed for each block:

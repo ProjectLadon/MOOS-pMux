@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.2.6.3
+links: []
+normative: true
+ref: ''
+reviewed: 5fda5f6ffcffd2ad3ea7a6f8fa2b39b8
+text: |
+  The variable named by ```var``` must have the type named in this key. If this condition is not met, the module **shall** log an error and exit.

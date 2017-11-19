@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.2.2.0
+links: []
+normative: true
+ref: ''
+reviewed: 071979f77d6413fd999e2c977a3850b5
+text: |
+  Each ```block``` entry **must** have a ```ChannelType``` key, which names a MOOS type.

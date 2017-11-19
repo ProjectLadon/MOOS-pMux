@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.2.3.1.1
+links: []
+normative: true
+ref: ''
+reviewed: f42e9ce08d14e37d0aa141bc6ee14e0c
+text: |
+  If the value of this key is ```fixed```, the module **shall** treat this as a fixed value.

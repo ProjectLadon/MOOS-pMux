@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.2.3.2.0
+links: []
+normative: true
+ref: ''
+reviewed: 0ece32a77e67cb657fd8a586a79a5462
+text: |
+  Each True object **must** have a ```var``` key.

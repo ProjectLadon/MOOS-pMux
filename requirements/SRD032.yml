@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 2.1
+links: []
+normative: true
+ref: ''
+reviewed: d9405db96e6b1d9688bf4edf3480c6a4
+text: |
+  On each comms tick, this module **shall** read the True, False, and Switch inputs for each block.

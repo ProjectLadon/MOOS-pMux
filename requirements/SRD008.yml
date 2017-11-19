@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.2.2.1
+links: []
+normative: true
+ref: ''
+reviewed: c52eab2f8f426e3c22716e9ae85a6496
+text: |
+  The output variable **shall** be of this type.

@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.2.3.2.1
+links: []
+normative: true
+ref: ''
+reviewed: 8b4337ba453a12af43120d7de652bd30
+text: |
+  If the value of the ```function``` key is ```variable```, then this key must be a string that names a MOOS community variable of the same type specified in ```ChannelType```. If this condition is not met, the module **shall** log an error and exit.

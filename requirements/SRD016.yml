@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.2.3.2.2
+links: []
+normative: true
+ref: ''
+reviewed: 3744ccf06a7cb405df5ba411db155d0f
+text: |
+  If the value of the ```function``` key is ```fixed```, this key **must** have the same type as named in ```ChannelType```. If this condition is not met, the module **shall** log an error and exit.

@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.2.6.0
+links: []
+normative: true
+ref: ''
+reviewed: a7f307301eaa6f1297666a5bec310b90
+text: |
+  Each ```block``` entry **must** have a ```Switch``` key which is a JSON object.

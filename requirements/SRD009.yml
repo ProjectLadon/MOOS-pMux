@@ -1,0 +1,9 @@
+active: true
+derived: false
+level: 1.2.2.2
+links: []
+normative: true
+ref: ''
+reviewed: bb67ad23c6f21a655dde4b18c103086e
+text: |
+  The input variables **must** be of this type. If they are not, they **shall** be ignored.
