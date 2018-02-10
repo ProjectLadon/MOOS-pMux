@@ -1,6 +1,6 @@
 /************************************************************/
 /*    NAME:                                               */
-/*    ORGN: MIT                                             */
+/*    ORGN: Project Ladon                                    */
 /*    FILE: Mux.h                                          */
 /*    DATE: December 29th, 1963                             */
 /************************************************************/
@@ -9,28 +9,42 @@
 #define Mux_HEADER
 
 #include "MOOS/libMOOS/Thirdparty/AppCasting/AppCastingMOOSApp.h"
+#include "MuxBlock.hpp"
+#include <vector>
+#include <memory>
 
-class Mux : public AppCastingMOOSApp
-{
- public:
-   Mux();
-   ~Mux();
+class muxtest;  // Forward declaration to enable hooking in the test framework
 
- protected: // Standard MOOSApp functions to overload  
-   bool OnNewMail(MOOSMSG_LIST &NewMail);
-   bool Iterate();
-   bool OnConnectToServer();
-   bool OnStartUp();
+class Mux : public AppCastingMOOSApp {
+    friend muxtest;
+    public:
+        Mux() {};
+        ~Mux() {};
+        bool notify(const std::string &var, const std::string &val) {
+     	   return Notify(var, val);
+        };
+        bool notify(const std::string &var, const double &val) {
+     	   return Notify(var, val);
+        };
+        bool notify(const std::string &var, const std::vector<uint8_t> &val) {
+     	   return Notify(var, val);
+        };
+        bool registerVar(const std::string &var) {return Register(var);};
 
- protected: // Standard AppCastingMOOSApp function to overload 
-   bool buildReport();
+    protected: // Standard MOOSApp functions to overload
+        bool OnNewMail(MOOSMSG_LIST &NewMail);
+        bool Iterate();
+        bool OnConnectToServer();
+        bool OnStartUp();
 
- protected:
-   void registerVariables();
+        // Standard AppCastingMOOSApp function to overload
+        bool buildReport();
+        void registerVariables();
 
- private: // Configuration variables
+        // Configuration variables
 
- private: // State variables
+        // State variables
+        std::vector<std::unique_ptr<MuxBlockBase>> blocks;
 };
 
-#endif 
+#endif

@@ -1,46 +1,69 @@
 {
 	"$schema": "http://json-schema.org/schema#",
 	"id": "MUX_block",
+	"definitions": {
+		"inputString": {
+			"type": "object",
+			"properties": {
+				"inputType": "STRING",
+				"function":{"type":"string","enum":["fixed","variable"]},
+				"var": {"type":"string"},
+				"val": {"type":"string"}
+			},
+			"required": ["inputType", "function", "var"]
+		},
+		"inputDouble": {
+			"type": "object",
+			"properties": {
+				"inputType": "DOUBLE",
+				"function":{"type":"string","enum":["fixed","variable"]},
+				"var": {"type": "string"},
+				"val": {"type": "number"},
+				"threshold": {"type": "number"}
+			},
+			"required": ["inputType", "function", "var"]
+		},
+		"inputBinary": {
+			"type": "object",
+			"properties": {
+				"inputType": "BINARY",
+				"function":{"type":"string","enum":["fixed","variable"]},
+				"var": {"type": "string"},
+				"val": {
+					"oneOf": [
+						{"type": "string"},
+						{"type": "array", "items": {"type": "integer"}}
+					]
+				}
+			},
+			"required": ["inputType", "function", "var"]
+		}
+	},
 	"type": "object",
 	"properties":{
 		"ChannelType":{"type":"string","enum":["STRING","DOUBLE","BINARY"]},
 		"True":{
-			"type":"object",
-			"properties": {
-				"function":{"type":"string","enum":["fixed","variable"]},
-				"var":{
-					"oneOf":[
-						{"type":"string"},
-						{"type":"number"},
-						{"type":"boolean"}
-					]
-				}
-			},
-			"required":["var"],
+			"oneOf": [
+				{"$ref": "#/definitions/inputString"},
+				{"$ref": "#/definitions/inputDouble"},
+				{"$ref": "#/definitions/inputBinary"}
+			]
 		},
 		"False":{
-			"type":"object",
-			"properties": {
-				"function":{"type":"string","enum":["fixed","variable"]},
-				"var":{
-					"oneOf":[
-						{"type":"string"},
-						{"type":"number"},
-						{"type":"boolean"}
-					]
-				}
-			},
-			"required":["var"],
+			"oneOf": [
+				{"$ref": "#/definitions/inputString"},
+				{"$ref": "#/definitions/inputDouble"},
+				{"$ref": "#/definitions/inputBinary"}
+			]
 		},
 		"Output":{"type":"string"},
 		"Switch":{
-			"type":"object",
-			"properties": {
-				"type":{"type":"string","enum":["BINARY","DOUBLE"]},
-				"var":{"type":"string"},
-				"threshold":{"type":"number"}
-			},
-			"required":["var"],
+			"oneOf": [
+				{"$ref": "#/definitions/inputString"},
+				{"$ref": "#/definitions/inputDouble"},
+				{"$ref": "#/definitions/inputBinary"}
+			]
 		}
-	}
+	},
+	"required":["ChannelType", "True", "False", "Output", "Switch"]
 }

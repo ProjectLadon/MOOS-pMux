@@ -1,149 +1,140 @@
 /************************************************************/
 /*    NAME:                                               */
-/*    ORGN: MIT                                             */
+/*    ORGN: Project Ladon                                */
 /*    FILE: Mux.cpp                                        */
 /*    DATE:                                                 */
 /************************************************************/
 
 #include <iterator>
+#include <cstdlib>
+#include <memory>
 #include "MBUtils.h"
 #include "ACTable.h"
 #include "Mux.h"
+#include "rapidjson/rapidjson.h"
+#include "rapidjson/schema.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/error/en.h"
 
 using namespace std;
 
 //---------------------------------------------------------
-// Constructor
-
-Mux::Mux()
-{
-}
-
-//---------------------------------------------------------
-// Destructor
-
-Mux::~Mux()
-{
-}
-
-//---------------------------------------------------------
 // Procedure: OnNewMail
+bool Mux::OnNewMail(MOOSMSG_LIST &NewMail) {
+    AppCastingMOOSApp::OnNewMail(NewMail);
 
-bool Mux::OnNewMail(MOOSMSG_LIST &NewMail)
-{
-  AppCastingMOOSApp::OnNewMail(NewMail);
+    for(auto &msg: NewMail) {
+        string key    = msg.GetKey();
+        bool result = true;
 
-  MOOSMSG_LIST::iterator p;
-  for(p=NewMail.begin(); p!=NewMail.end(); p++) {
-    CMOOSMsg &msg = *p;
-    string key    = msg.GetKey();
+        for (auto &b: blocks) {
+            result &= b->procMail(msg);
+        }
 
-#if 0 // Keep these around just for template
-    string comm  = msg.GetCommunity();
-    double dval  = msg.GetDouble();
-    string sval  = msg.GetString(); 
-    string msrc  = msg.GetSource();
-    double mtime = msg.GetTime();
-    bool   mdbl  = msg.IsDouble();
-    bool   mstr  = msg.IsString();
-#endif
+        if(!result || (key != "APPCAST_REQ")) { // handled by AppCastingMOOSApp
+            reportRunWarning("Unhandled Mail: " + key);
+        }
+    }
 
-     if(key == "FOO") 
-       cout << "great!";
+    for (auto &b: blocks) {
+        b->transmit(this);
+    }
 
-     else if(key != "APPCAST_REQ") // handled by AppCastingMOOSApp
-       reportRunWarning("Unhandled Mail: " + key);
-   }
-	
-   return(true);
+    return(true);
 }
 
 //---------------------------------------------------------
 // Procedure: OnConnectToServer
-
-bool Mux::OnConnectToServer()
-{
-   registerVariables();
-   return(true);
+bool Mux::OnConnectToServer() {
+    registerVariables();
+    return(true);
 }
 
 //---------------------------------------------------------
 // Procedure: Iterate()
 //            happens AppTick times per second
-
-bool Mux::Iterate()
-{
-  AppCastingMOOSApp::Iterate();
-  // Do your thing here!
-  AppCastingMOOSApp::PostReport();
-  return(true);
+bool Mux::Iterate() {
+    AppCastingMOOSApp::Iterate();
+    // Do your thing here!
+    AppCastingMOOSApp::PostReport();
+    return(true);
 }
 
 //---------------------------------------------------------
 // Procedure: OnStartUp()
 //            happens before connection is open
+bool Mux::OnStartUp() {
+    AppCastingMOOSApp::OnStartUp();
 
-bool Mux::OnStartUp()
-{
-  AppCastingMOOSApp::OnStartUp();
-
-  STRING_LIST sParams;
-  m_MissionReader.EnableVerbatimQuoting(false);
-  if(!m_MissionReader.GetConfiguration(GetAppName(), sParams))
-    reportConfigWarning("No config block found for " + GetAppName());
-
-  STRING_LIST::iterator p;
-  for(p=sParams.begin(); p!=sParams.end(); p++) {
-    string orig  = *p;
-    string line  = *p;
-    string param = toupper(biteStringX(line, '='));
-    string value = line;
-
-    bool handled = false;
-    if(param == "FOO") {
-      handled = true;
-    }
-    else if(param == "BAR") {
-      handled = true;
+    STRING_LIST sParams;
+    m_MissionReader.EnableVerbatimQuoting(false);
+    if(!m_MissionReader.GetConfiguration(GetAppName(), sParams)) {
+        reportConfigWarning("No config block found for " + GetAppName());
     }
 
-    if(!handled)
-      reportUnhandledConfigWarning(orig);
+    for (auto &p : sParams) {
 
-  }
-  
-  registerVariables();	
-  return(true);
+        string orig  = p;
+        string line  = p;
+        string param = toupper(biteStringX(line, '='));
+        string value = line;
+
+        bool handled = false;
+        if ("block" == param) {
+            rapidjson::Document d;
+            if (d.Parse(value.c_str()).HasParseError()) {
+                cerr << "JSON parse error " << GetParseError_En(d.GetParseError());
+                cerr << " in " << param << " at offset " << d.GetErrorOffset() << endl;
+                std::abort();
+            } else {
+                unique_ptr<MuxBlockBase> tmp = MuxBlockBase::muxBlockFactory(d);
+                if (tmp) {
+                    blocks.push_back(move(tmp));
+                } else {
+                    cerr << "Invalid block; exiting" << endl;
+                    std::abort();
+                }
+            }
+        }
+
+        if(!handled) reportUnhandledConfigWarning(orig);
+
+    }
+
+    registerVariables();
+    return(true);
 }
 
 //---------------------------------------------------------
 // Procedure: registerVariables
-
-void Mux::registerVariables()
-{
-  AppCastingMOOSApp::RegisterVariables();
-  // Register("FOOBAR", 0);
+void Mux::registerVariables() {
+    AppCastingMOOSApp::RegisterVariables();
+    for (auto &b: blocks) {
+        b->subscribe(this);
+    }
 }
-
 
 //------------------------------------------------------------
 // Procedure: buildReport()
+bool Mux::buildReport() {
+    m_msgs << "============================================ \n";
+    m_msgs << " pMux                                        \n";
+    m_msgs << "============================================ \n";
+    list<string> headers;
+    list<string> values;
+    // Assemble the headers & values as a unified list
+    for (auto &b: blocks) {
+        list<string> tmph = b->buildReportHeader();
+        for (auto &h: tmph) headers.push_back(h);
+        list<string> tmpv = b->buildReportLines();
+        for (auto &v: tmpv) values.push_back(v);
+    }
+    // Assemble the response
+    ACTable actab(headers.size());
+    for (auto &h: headers) actab << h;
+    actab.addHeaderLines();
+    for (auto &v: values) actab << v;
+    m_msgs << actab.getFormattedString();
 
-bool Mux::buildReport() 
-{
-  m_msgs << "============================================ \n";
-  m_msgs << "File:                                        \n";
-  m_msgs << "============================================ \n";
-
-  ACTable actab(4);
-  actab << "Alpha | Bravo | Charlie | Delta";
-  actab.addHeaderLines();
-  actab << "one" << "two" << "three" << "four";
-  m_msgs << actab.getFormattedString();
-
-  return(true);
+    return(true);
 }
-
-
-
-
