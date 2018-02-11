@@ -24,11 +24,11 @@ bool Mux::OnNewMail(MOOSMSG_LIST &NewMail) {
     AppCastingMOOSApp::OnNewMail(NewMail);
 
     for(auto &msg: NewMail) {
-        string key    = msg.GetKey();
-        bool result = true;
+        string key = msg.GetKey();
+        bool result = false;
 
         for (auto &b: blocks) {
-            result &= b->procMail(msg);
+            result |= b->procMail(msg);
         }
 
         if(!result || (key != "APPCAST_REQ")) { // handled by AppCastingMOOSApp
@@ -80,7 +80,7 @@ bool Mux::OnStartUp() {
         string value = line;
 
         bool handled = false;
-        if ("block" == param) {
+        if ("BLOCK" == param) {
             rapidjson::Document d;
             if (d.Parse(value.c_str()).HasParseError()) {
                 cerr << "JSON parse error " << GetParseError_En(d.GetParseError());
@@ -95,6 +95,7 @@ bool Mux::OnStartUp() {
                     std::abort();
                 }
             }
+            handled = true;
         }
 
         if(!handled) reportUnhandledConfigWarning(orig);
