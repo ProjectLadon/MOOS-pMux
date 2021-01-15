@@ -42,4 +42,14 @@ TARGET_LINK_LIBRARIES(pMux
    apputil
    mbutil
    m
-   pthread)
+pthread)
+
+find_program(CTAGS ctags)
+if (CTAGS)
+	FIND_FILE(MAKE_CTAGS make_ctags.sh ../..)
+    ADD_CUSTOM_TARGET(mux_ctags ALL
+        ${MAKE_CTAGS} .
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        DEPENDS pMux
+    )
+endif(CTAGS)
